@@ -13,6 +13,7 @@
   height: 600px;
   flex-wrap: wrap;
   justify-content: center;
+  box-shadow: 0px 0px 50px rgba(0,0,0,0.5);
 
 }
 .cell {
@@ -21,10 +22,12 @@
   height: 200px;
   font-size: 25px;
   border: 2px solid white;
+  background-color: #1c2022;
   font-size: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 .usable {
   transition: background-color;
@@ -33,4 +36,13 @@
 .usable:hover {
   cursor: pointer;
   background-color: #80cd92;
+}
+@keyframes pulse {
+  0% {background-color: inherit;}
+  50% {background-color: #80cd92;}
+  100% {background-color: inherit;}
+
+}
+.winner{
+  animation: pulse 2s infinite
 }

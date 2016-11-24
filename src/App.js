@@ -6,7 +6,8 @@ class App extends Component {
     this.state ={
       board: ["","","","","","","","",""],
       currentTurn: "X",
-      winner: null
+      winner: null,
+      winningCells: []
     }
     this.handleOnClick = this.handleOnClick.bind(this);
 
@@ -35,6 +36,7 @@ class App extends Component {
       this.setState({
         board: ["","","","","","","","",""],
         winner: null,
+        winningCells: [],
         currentTurn: "X"
       })
     }
@@ -46,6 +48,7 @@ class App extends Component {
     return winningCombos.find(combo => {
       console.log()
       if(board[combo[1]] === board[combo[2]] && board[combo[0]] === board[combo[1]] && board[combo[0]] !== ""){
+        this.setState({winningCells: combo});
         return this.state.currentTurn;
       }
       else{
@@ -54,12 +57,26 @@ class App extends Component {
     });
 
   }
+  generateClasses(cell, index){
+    const { winningCells } = this.state;
+    if(cell === ""){
+      return "cell usable"
+    }
+    else if(cell !== "" && winningCells.indexOf(index) !== -1){
+      return "cell winner"
+    }
+    else{
+      return "cell"
+    }
+  }
 
   render() {
     const { board, winner } = this.state;
     const generatedBoard = board.map((cell, index) =>{
+    const className = this.generateClasses(cell, index);
+      console.log(className);
       return (
-        <div className={cell === "" ? "cell usable" : "cell"}
+        <div className={className}
           key={index}
           onClick={() => this.handleOnClick(index)}>
           {cell}
@@ -68,8 +85,8 @@ class App extends Component {
     });
     return (
       <div className="container">
-        <h1 className="title"> Tic Tac Toe. </h1>
-        <div>{winner ? `${winner} has won!` : "Keep Playing!"}</div>
+        <h1 className="title"> Tic Tac Toe </h1>
+        <div className="result">{winner ? `${winner} has won!` : ""}</div>
         <div className="board">
           {generatedBoard}
         </div>
