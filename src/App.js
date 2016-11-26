@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Modal from './Modal.js';
 import './App.css';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -7,9 +9,13 @@ class App extends Component {
       board: ["","","","","","","","",""],
       currentTurn: "X",
       winner: null,
-      winningCells: []
+      winningCells: [],
+      userSymbol: "",
+      computerSymbol: "",
+      modalOpen: true
     }
     this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleSymbolSelection = this.handleSymbolSelection.bind(this);
 
   }
 
@@ -33,11 +39,34 @@ class App extends Component {
       }
     }
     else{
+      console.log("we're Here")
       this.setState({
         board: ["","","","","","","","",""],
-        winner: null,
         winningCells: [],
-        currentTurn: "X"
+        currentTurn: "",
+        modalOpen: true,
+        userSymbol: "",
+        computerSymbol: ""
+      })
+    }
+  }
+  handleSymbolSelection(symbol){
+    if(symbol === "X"){
+      this.setState({
+        currentTurn: "X",
+        userSymbol: "X",
+        computerSymbol: "Y",
+        modalOpen: false,
+        winner: null
+      });
+    }
+    else {
+      this.setState({
+        currentTurn: "O",
+        userSymbol: "O",
+        computerSymbol: "X",
+        modalOpen: false,
+        winner: null
       })
     }
   }
@@ -69,12 +98,15 @@ class App extends Component {
       return "cell"
     }
   }
+  computerTurn(board){
+
+
+  }
 
   render() {
     const { board, winner } = this.state;
     const generatedBoard = board.map((cell, index) =>{
-    const className = this.generateClasses(cell, index);
-      console.log(className);
+      let className = this.generateClasses(cell, index);
       return (
         <div className={className}
           key={index}
@@ -84,16 +116,15 @@ class App extends Component {
       )
     });
     return (
-      <div className="container">
-        <h1 className="title"> Tic Tac Toe </h1>
-        <div className="result">{winner ? `${winner} has won!` : ""}</div>
-        <div className="board">
-          {generatedBoard}
+      <div>
+        {this.state.modalOpen ? <Modal winner={winner} onClick={this.handleSymbolSelection}/>: ""}
+        <div className="container">
+          <h1 className="title"> Tic Tac Toe </h1>
+          <div className="board">
+            {generatedBoard}
+          </div>
         </div>
-
-
       </div>
-
 
     );
   }
