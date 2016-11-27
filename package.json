@@ -2,7 +2,7 @@
   "name": "ticTacToe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://www.codyswift.com/ttt/",
+  "homepage": "http://www.codyswift.com/ReactTest2/ticTacToe",
   "devDependencies": {
     "react-scripts": "0.7.0"
   },
