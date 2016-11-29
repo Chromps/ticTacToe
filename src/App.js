@@ -7,7 +7,6 @@ class App extends Component {
     super(props);
     this.state ={
       board: ["","","","","","","","",""],
-      currentTurn: "X",
       winner: null,
       winningCells: [],
       userSymbol: "",
@@ -20,26 +19,23 @@ class App extends Component {
   }
 
   handleOnClick(index){
-    let { board, currentTurn, winner } = this.state;
+    let { board, userSymbol, winner } = this.state;
     if(!winner && board.indexOf("") !== -1)
       {
+        console.log(index);
         if(board[index] === ""){
-        board[index] = currentTurn;
-        if(this.checkForWinner()){
-          this.setState({
-            winner: currentTurn
-          })
-        }
-        else if(currentTurn === "X"){
-          this.setState({currentTurn: "O" , board});
-        }
-        else{
-          this.setState({currentTurn: "X", board});
+          console.log(board[index], index, userSymbol);
+          board[index] = userSymbol;
+          this.setState({board});
+          this.checkForWinner();
+          if(board.indexOf("") !== -1 && !winner){
+
+              this.computerTurn();
+
+          }
         }
       }
-    }
     else{
-      console.log("we're Here")
       this.setState({
         board: ["","","","","","","","",""],
         winningCells: [],
@@ -53,16 +49,14 @@ class App extends Component {
   handleSymbolSelection(symbol){
     if(symbol === "X"){
       this.setState({
-        currentTurn: "X",
         userSymbol: "X",
-        computerSymbol: "Y",
+        computerSymbol: "O",
         modalOpen: false,
         winner: null
       });
     }
     else {
       this.setState({
-        currentTurn: "O",
         userSymbol: "O",
         computerSymbol: "X",
         modalOpen: false,
@@ -74,14 +68,11 @@ class App extends Component {
   checkForWinner(){
     const {board} = this.state;
     const winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
-    return winningCombos.find(combo => {
+    winningCombos.find(combo => {
       console.log()
       if(board[combo[1]] === board[combo[2]] && board[combo[0]] === board[combo[1]] && board[combo[0]] !== ""){
-        this.setState({winningCells: combo});
-        return this.state.currentTurn;
-      }
-      else{
-        return false;
+        this.setState({winningCells: combo, winner: board[combo[0]]});
+
       }
     });
 
@@ -98,7 +89,17 @@ class App extends Component {
       return "cell"
     }
   }
-  computerTurn(board){
+  computerTurn(){
+    const { board, computerSymbol } = this.state;
+    let firstTurn = 0;
+    while(board[firstTurn] !== ""){
+      firstTurn =  Math.floor(Math.random() * 9);
+    }
+    board[firstTurn] = computerSymbol;
+
+    this.setState({board});
+
+    this.checkForWinner();
 
 
   }
@@ -119,7 +120,7 @@ class App extends Component {
       <div>
         {this.state.modalOpen ? <Modal winner={winner} onClick={this.handleSymbolSelection}/>: ""}
         <div className="container">
-          <h1 className="title"> Tic Tac Toe </h1>
+          <h1 className="title"> Tic - Tac - Toe </h1>
           <div className="board">
             {generatedBoard}
           </div>
