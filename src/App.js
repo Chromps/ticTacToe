@@ -22,9 +22,7 @@ class App extends Component {
     let { board, userSymbol, winner } = this.state;
     if(!winner && board.indexOf("") !== -1)
       {
-        console.log(index);
         if(board[index] === ""){
-          console.log(board[index], index, userSymbol);
           board[index] = userSymbol;
           this.setState({board});
           this.checkForWinner();
@@ -69,7 +67,6 @@ class App extends Component {
     const {board} = this.state;
     const winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
     winningCombos.find(combo => {
-      console.log()
       if(board[combo[1]] === board[combo[2]] && board[combo[0]] === board[combo[1]] && board[combo[0]] !== ""){
         this.setState({winningCells: combo, winner: board[combo[0]]});
 
@@ -90,11 +87,36 @@ class App extends Component {
     }
   }
   computerTurn(){
-    const { board, computerSymbol } = this.state;
+    const { board, computerSymbol, userSymbol } = this.state;
+    const winningCombo = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+
     let firstTurn = 0;
     while(board[firstTurn] !== ""){
       firstTurn =  Math.floor(Math.random() * 9);
     }
+    //  let move = winningCombo.find(combo => {
+    //
+    //  if(board[combo[0]] === computerSymbol || board[combo[1]] === computerSymbol || board[combo[2]] === computerSymbol){
+    //     if(board[combo[0]] === board[combo[1]] && board[combo[2]] !== userSymbol){
+    //       return combo[2];
+    //     }
+    //     else if(board[combo[1]] === board[combo[2]] && board[combo[0]] !== userSymbol){
+    //       return combo[0];
+    //     }
+    //     else if(board[combo[0]] === computerSymbol && board[combo[1]] !== userSymbol){
+    //       return combo[1];
+    //     }
+    //     else if (board[combo[1]] === computerSymbol && board[combo[2]] !== userSymbol) {
+    //       return combo[2];
+    //     }
+    //     else if (board[combo[2]] === computerSymbol && board[combo[1]] !== userSymbol){
+    //       return combo[1];
+    //     }
+    //   }
+    // });
+    // console.log(move);
+
+
     board[firstTurn] = computerSymbol;
 
     this.setState({board});
